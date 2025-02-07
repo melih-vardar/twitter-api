@@ -2,25 +2,25 @@ spring:
   application:
     name: twitter
   datasource:
-    url: jdbc:postgresql://localhost:5432/twitter-db
-    username: postgres
-    password: asdasd123
+    url: jdbc:postgresql://localhost:5432/your-database-name
+    username: your-username
+    password: your-password
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     showSql: true
     hibernate:
-      ddlAuto: create
+      ddlAuto: update
 server:
   port: 3000
-#jwt:
-#  expiration: 60000000
-#  secret: ""
+jwt:
+  expiration: 0
+  secret: your-jwt-secret-key
 
 springdoc:
   api-docs:
-    path: /api-docs/twitter
+    path: /v1/api-docs
   swagger-ui:
     path: /swagger-ui.html
     operationsSorter: method
