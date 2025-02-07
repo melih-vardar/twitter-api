@@ -1,4 +1,4 @@
-package com.example.twitter.dto;
+package com.example.twitter.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

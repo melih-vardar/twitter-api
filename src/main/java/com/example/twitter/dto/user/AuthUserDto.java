@@ -1,4 +1,4 @@
-package com.example.twitter.dto;
+package com.example.twitter.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

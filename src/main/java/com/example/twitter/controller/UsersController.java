@@ -1,8 +1,8 @@
 package com.example.twitter.controller;
 
-import com.example.twitter.dto.AuthUserDto;
-import com.example.twitter.dto.LoginDto;
-import com.example.twitter.dto.RegisterDto;
+import com.example.twitter.dto.user.AuthUserDto;
+import com.example.twitter.dto.user.LoginDto;
+import com.example.twitter.dto.user.RegisterDto;
 import com.example.twitter.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

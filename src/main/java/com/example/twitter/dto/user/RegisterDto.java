@@ -1,4 +1,4 @@
-package com.example.twitter.dto;
+package com.example.twitter.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -23,7 +23,7 @@ public class RegisterDto {
 
     @NotBlank(message = "Password cannot be empty")
     @Size(min = 8, message = "Password must be at least 8 characters")
-    @Pattern(regexp = ".*[0-9].*", message = "Password must contain at least one digit")
+    @Pattern(regexp = ".*[0-9].*", message = "Password must contain at least one number")
     @Pattern(regexp = ".*[a-z].*", message = "Password must contain at least one lowercase letter")
     @Pattern(regexp = ".*[A-Z].*", message = "Password must contain at least one uppercase letter")
     private String password;
