@@ -7,6 +7,7 @@ import com.example.twitter.dto.user.UserListingDto;
 import com.example.twitter.entity.Like;
 import com.example.twitter.repository.LikeRepository;
 import com.example.twitter.repository.TweetRepository;
+import com.example.twitter.util.exception.type.BusinessException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,7 @@ public class LikeServiceImpl implements LikeService {
         Like like = new Like();
         like.setUser(userService.getActiveUser());
         like.setTweet(tweetRepository.findById(createLikeDto.getTweetId())
-                .orElseThrow(() -> new RuntimeException("Tweet not found")));
+                .orElseThrow(() -> new BusinessException("Tweet not found")));
         like.setCreatedAt(LocalDateTime.now());
 
         return convertToListingDto(likeRepository.save(like));
@@ -49,7 +50,7 @@ public class LikeServiceImpl implements LikeService {
         Like like = likeRepository.findByUserIdAndTweetId(
                 userService.getActiveUser().getId(), 
                 createLikeDto.getTweetId())
-                .orElseThrow(() -> new RuntimeException("Like not found"));
+                .orElseThrow(() -> new BusinessException("Like not found"));
         
         likeRepository.delete(like);
     }

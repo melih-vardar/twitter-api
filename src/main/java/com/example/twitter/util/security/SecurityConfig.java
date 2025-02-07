@@ -2,6 +2,7 @@ package com.example.twitter.util.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,9 +23,26 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((req) -> req
-//                        .requestMatchers(HttpMethod.DELETE,"/api/v1/products/**").hasAnyAuthority("Product.Delete", "Admin")
-//                        .requestMatchers(HttpMethod.POST,"/api/v1/products/**").hasAnyAuthority("Product.Create", "Admin")
-//                        .requestMatchers(HttpMethod.PUT, "/api/v1/products/**").hasAnyAuthority("Product.Update", "Admin")
+
+                        .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/tweet/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/comment/**").permitAll()
+                        
+                        .requestMatchers(HttpMethod.POST, "/tweet").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/tweet/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/tweet/**").authenticated()
+                        
+                        .requestMatchers(HttpMethod.POST, "/comment").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/comment/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/comment/**").authenticated()
+                        
+                        .requestMatchers(HttpMethod.POST, "/like").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/dislike").authenticated()
+                        
+                        .requestMatchers(HttpMethod.POST, "/retweet").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/retweet/**").authenticated()
+                        
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

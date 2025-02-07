@@ -8,6 +8,7 @@ import com.example.twitter.dto.user.UserListingDto;
 import com.example.twitter.entity.Comment;
 import com.example.twitter.repository.CommentRepository;
 import com.example.twitter.repository.TweetRepository;
+import com.example.twitter.util.exception.type.BusinessException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setContent(createCommentDto.getContent());
         comment.setUser(userService.getActiveUser());
         comment.setTweet(tweetRepository.findById(createCommentDto.getTweetId())
-                .orElseThrow(() -> new RuntimeException("Tweet not found")));
+                .orElseThrow(() -> new BusinessException("Tweet not found")));
         comment.setCreatedAt(LocalDateTime.now());
 
         return convertToListingDto(commentRepository.save(comment));
@@ -41,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
         commentBusinessRules.checkIfUserCanEditComment(id, userService.getActiveUser().getId());
 
         Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Comment not found"));
+                .orElseThrow(() -> new BusinessException("Comment not found"));
 
         comment.setContent(updateCommentDto.getContent());
         comment.setUpdatedAt(LocalDateTime.now());

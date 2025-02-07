@@ -10,6 +10,7 @@ import com.example.twitter.dto.like.LikeListingDto;
 import com.example.twitter.entity.Tweet;
 import com.example.twitter.entity.User;
 import com.example.twitter.repository.TweetRepository;
+import com.example.twitter.util.exception.type.BusinessException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +51,8 @@ public class TweetServiceImpl implements TweetService {
     @Override
     public TweetListingDto findById(Integer id) {
         tweetBusinessRules.checkIfTweetExists(id);
-        return convertToListingDto(tweetRepository.findByTweetId(id));
+        return convertToListingDto(tweetRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Tweet not found")));
     }
 
     @Override
@@ -58,7 +60,8 @@ public class TweetServiceImpl implements TweetService {
         tweetBusinessRules.checkIfTweetExists(id);
         tweetBusinessRules.checkIfUserIsOwner(id);
 
-        Tweet tweet = tweetRepository.findByTweetId(id);
+        Tweet tweet = tweetRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Tweet not found"));
         tweet.setContent(updateTweetDto.getContent());
         tweet.setUpdatedAt(LocalDateTime.now());
 

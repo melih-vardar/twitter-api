@@ -28,7 +28,7 @@ public class UserBusinessRules {
 
     public void usernameMustExist(String username){
         if(userRepository.findByUsername(username) == null) {
-            throw new BusinessException("User does not exist.");
+            throw new BusinessException("Invalid or wrong credentials.");
         }
     }
 

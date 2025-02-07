@@ -64,7 +64,6 @@ public class UserServiceImpl implements UserService {
 
         String username = authentication.getName();
 
-        userBusinessRules.usernameMustExist(username);
         return userRepository.findByUsername(username);
     }
 

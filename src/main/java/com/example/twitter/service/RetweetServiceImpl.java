@@ -7,10 +7,12 @@ import com.example.twitter.dto.user.UserListingDto;
 import com.example.twitter.entity.Retweet;
 import com.example.twitter.repository.RetweetRepository;
 import com.example.twitter.repository.TweetRepository;
+import com.example.twitter.util.exception.type.BusinessException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -22,15 +24,22 @@ public class RetweetServiceImpl implements RetweetService {
 
     @Override
     public RetweetListingDto create(CreateRetweetDto createRetweetDto) {
-        Retweet retweet = new Retweet();
-        retweet.setUser(userService.getActiveUser());
+        Retweet retweet;
+        if(isTweetIsAlreadyRetweeted(createRetweetDto.getOriginalTweetId(), userService.getActiveUserId())){
+            retweet = retweetRepository.findByOriginalTweetIdAndUserId(createRetweetDto.getOriginalTweetId(), userService.getActiveUserId()).get();
+            delete(retweet.getId());
+        }
+        else {
+            retweet = new Retweet();
+            retweet.setUser(userService.getActiveUser());
 
-        retweet.setOriginalTweet(tweetRepository.findById(createRetweetDto.getOriginalTweetId())
-                .orElseThrow(() -> new RuntimeException("Tweet not found")));
+            retweet.setOriginalTweet(tweetRepository.findById(createRetweetDto.getOriginalTweetId())
+                    .orElseThrow(() -> new BusinessException("Tweet not found")));
 
-        retweet.setQuote(createRetweetDto.getQuote());
-        retweet.setCreatedAt(LocalDateTime.now());
-        retweetRepository.save(retweet);
+            retweet.setQuote(createRetweetDto.getQuote());
+            retweet.setCreatedAt(LocalDateTime.now());
+            retweetRepository.save(retweet);
+        }
         return convertToListingDto(retweet);
     }
 
@@ -56,5 +65,9 @@ public class RetweetServiceImpl implements RetweetService {
         
         dto.setQuote(retweet.getQuote());
         return dto;
+    }
+
+    private Boolean isTweetIsAlreadyRetweeted(Integer originalTweetId, UUID userId) {
+        return retweetRepository.findByOriginalTweetIdAndUserId(originalTweetId, userId).isPresent();
     }
 } 

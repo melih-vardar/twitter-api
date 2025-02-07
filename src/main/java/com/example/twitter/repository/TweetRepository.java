@@ -7,5 +7,4 @@ import java.util.UUID;
 
 public interface TweetRepository extends JpaRepository<Tweet, Integer> {
     List<Tweet> findByUserId(UUID userId);
-    Tweet findByTweetId(Integer tweetId);
-} 
+}
