@@ -76,6 +76,16 @@ public class TweetServiceImpl implements TweetService {
         tweetRepository.deleteById(id);
     }
 
+    @Override
+    public List<TweetListingDto> findCurrentUserTweets() {
+        User currentUser = userService.getActiveUser();
+        return tweetRepository
+                .findByUserId(currentUser.getId())
+                .stream()
+                .map(this::convertToListingDto)
+                .collect(Collectors.toList());
+    }
+
     private CreateTweetDto convertToCreateDto(Tweet tweet) {
         CreateTweetDto dto = new CreateTweetDto();
         dto.setContent(tweet.getContent());

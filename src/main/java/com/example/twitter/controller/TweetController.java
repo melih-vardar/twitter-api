@@ -41,4 +41,9 @@ public class TweetController {
     public void delete(@PathVariable Integer id) {
         tweetService.delete(id);
     }
+
+    @GetMapping("/my-tweets")
+    public List<TweetListingDto> getCurrentUserTweets() {
+        return tweetService.findCurrentUserTweets();
+    }
 } 

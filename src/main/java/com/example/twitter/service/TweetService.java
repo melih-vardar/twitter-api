@@ -13,4 +13,5 @@ public interface TweetService {
     TweetListingDto findById(Integer id);
     CreateTweetDto update(Integer id, UpdateTweetDto updateTweetDto);
     void delete(Integer id);
+    List<TweetListingDto> findCurrentUserTweets();
 } 
