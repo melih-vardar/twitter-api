@@ -113,7 +113,15 @@ public class TweetServiceImpl implements TweetService {
                     CommentListingDto commentDto = new CommentListingDto();
                     commentDto.setId(comment.getId());
                     commentDto.setContent(comment.getContent());
-                    commentDto.setUser(userDto);
+
+                    UserListingDto commentUserDto = new UserListingDto();
+                    commentUserDto.setId(comment.getUser().getId());
+                    commentUserDto.setUsername(comment.getUser().getUsername());
+                    commentUserDto.setName(comment.getUser().getName());
+                    commentUserDto.setSurname(comment.getUser().getSurname());
+
+                    commentDto.setUser(commentUserDto);
+
                     commentDto.setTweetId(comment.getTweet().getId());
                     return commentDto;
                 })
@@ -125,7 +133,15 @@ public class TweetServiceImpl implements TweetService {
                 .map(like -> {
                     LikeListingDto likeDto = new LikeListingDto();
                     likeDto.setId(like.getId());
-                    likeDto.setUser(userDto);
+
+                    UserListingDto likeUserDto = new UserListingDto();
+                    likeUserDto.setId(like.getUser().getId());
+                    likeUserDto.setUsername(like.getUser().getUsername());
+                    likeUserDto.setName(like.getUser().getName());
+                    likeUserDto.setSurname(like.getUser().getSurname());
+
+                    likeDto.setUser(likeUserDto);
+
                     likeDto.setTweetId(like.getTweet().getId());
                     return likeDto;
                 })

@@ -32,8 +32,8 @@ public class CommentServiceImpl implements CommentService {
         comment.setTweet(tweetRepository.findById(createCommentDto.getTweetId())
                 .orElseThrow(() -> new BusinessException("Tweet not found")));
         comment.setCreatedAt(LocalDateTime.now());
-
-        return convertToListingDto(commentRepository.save(comment));
+        commentRepository.save(comment);
+        return convertToListingDto(comment);
     }
 
     @Override
