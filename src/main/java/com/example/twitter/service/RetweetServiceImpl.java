@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -50,6 +51,22 @@ public class RetweetServiceImpl implements RetweetService {
         retweetRepository.deleteById(id);
     }
 
+    @Override
+    public List<RetweetListingDto> getRetweetsByUserId(UUID userId) {
+        return retweetRepository.findByUserId(userId)
+                .stream()
+                .map(this::convertToListingDto)
+                .toList();
+    }
+
+    @Override
+    public List<RetweetListingDto> getCurrentUserRetweets() {
+        return retweetRepository.findByUserId(userService.getActiveUserId())
+                .stream()
+                .map(this::convertToListingDto)
+                .toList();
+    }
+
     private RetweetListingDto convertToListingDto(Retweet retweet) {
         RetweetListingDto dto = new RetweetListingDto();
         dto.setId(retweet.getId());
@@ -62,8 +79,8 @@ public class RetweetServiceImpl implements RetweetService {
         userDto.setSurname(retweet.getUser().getSurname());
 
         dto.setUser(userDto);
-        
         dto.setQuote(retweet.getQuote());
+        dto.setStartDate(retweet.getCreatedAt());
         return dto;
     }
 

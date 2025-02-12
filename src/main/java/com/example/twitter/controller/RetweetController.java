@@ -7,6 +7,9 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/retweet")
 @AllArgsConstructor
@@ -21,5 +24,15 @@ public class RetweetController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) {
         retweetService.delete(id);
+    }
+
+    @GetMapping("/findByUserId")
+    public List<RetweetListingDto> getRetweetsByUserId(@RequestParam UUID userId) {
+        return retweetService.getRetweetsByUserId(userId);
+    }
+
+    @GetMapping("/my-retweets")
+    public List<RetweetListingDto> getCurrentUserRetweets() {
+        return retweetService.getCurrentUserRetweets();
     }
 } 

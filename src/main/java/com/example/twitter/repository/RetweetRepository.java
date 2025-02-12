@@ -12,4 +12,6 @@ public interface RetweetRepository extends JpaRepository<Retweet, Integer> {
 
     @Query("SELECT r FROM Retweet r WHERE r.originalTweet.id = :originalTweetId AND r.user.id = :userId")
     Optional<Retweet> findByOriginalTweetIdAndUserId(@Param("originalTweetId") Integer originalTweetId, @Param("userId") UUID userId);
+
+    List<Retweet> findByUserId(UUID userId);
 } 
