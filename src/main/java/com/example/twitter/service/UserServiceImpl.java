@@ -3,6 +3,7 @@ package com.example.twitter.service;
 import com.example.twitter.dto.user.AuthUserDto;
 import com.example.twitter.dto.user.LoginDto;
 import com.example.twitter.dto.user.RegisterDto;
+import com.example.twitter.dto.user.UserListingDto;
 import com.example.twitter.entity.User;
 import com.example.twitter.repository.UserRepository;
 import com.example.twitter.rules.UserBusinessRules;
@@ -70,5 +71,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public UUID getActiveUserId() {
         return getActiveUser().getId();
+    }
+
+    @Override
+    public UserListingDto findByUsername(String username) {
+        userBusinessRules.usernameMustExist(username);
+        User user = userRepository.findByUsername(username);
+        return convertToUserListingDto(user);
+    }
+
+    private UserListingDto convertToUserListingDto(User user) {
+        UserListingDto dto = new UserListingDto();
+        dto.setId(user.getId());
+        dto.setUsername(user.getUsername());
+        dto.setName(user.getName());
+        dto.setSurname(user.getSurname());
+        return dto;
     }
 }
