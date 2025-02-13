@@ -11,11 +11,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.context.annotation.Import;
 import com.example.twitter.config.TestSecurityConfig;
+import com.example.twitter.util.exception.type.BusinessException;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WebMvcTest(LikeController.class)
 @Import(TestSecurityConfig.class)
@@ -42,4 +45,32 @@ class LikeControllerTest {
                 .content(objectMapper.writeValueAsString(createLikeDto)))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void likeOrDislikeWithoutTweetId() throws Exception {
+        CreateLikeDto createLikeDto = new CreateLikeDto();
+
+        mockMvc.perform(post("/like")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createLikeDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors[0]").value("Tweet ID is required"));
+    }
+
+    @Test
+    void likeNonExistentTweet() throws Exception {
+        CreateLikeDto createLikeDto = new CreateLikeDto();
+        createLikeDto.setTweetId(-1);
+
+        doThrow(new BusinessException("Tweet not found"))
+            .when(likeService).likeOrDislike(any(CreateLikeDto.class));
+
+        mockMvc.perform(post("/like")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createLikeDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.type").value("BusinessException"))
+                .andExpect(jsonPath("$.message").value("Tweet not found"));
+    }
+
 }

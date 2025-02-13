@@ -12,12 +12,6 @@ import java.util.UUID;
 public class LikeBusinessRules {
     private final LikeRepository likeRepository;
 
-    public void checkIfAlreadyLiked(Integer tweetId, UUID userId) {
-        if (likeRepository.findByUserIdAndTweetId(userId, tweetId).isPresent()) {
-            throw new BusinessException("Tweet already liked");
-        }
-    }
-
     public void checkIfLikeExists(Integer tweetId, UUID userId) {
         if (likeRepository.findByUserIdAndTweetId(userId, tweetId).isEmpty()) {
             throw new BusinessException("Like not found");
