@@ -22,7 +22,6 @@ public class Tweet {
 
     @Column(name="content")
     @NotBlank
-    @Size(max=280, message="Tweet content can not be longer than 280 characters")
     private String content;
 
     @Column(name="created_at")

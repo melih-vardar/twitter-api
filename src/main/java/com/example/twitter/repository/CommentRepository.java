@@ -7,7 +7,4 @@ import java.util.UUID;
 
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
     List<Comment> findByTweetId(Integer tweetId);
-    List<Comment> findByUserId(UUID userId);
-    boolean existsByIdAndUserId(Integer id, UUID userId);
-    boolean existsByIdAndTweetUserId(Integer id, UUID userId);
-} 
+}

@@ -22,7 +22,6 @@ public class Comment {
 
     @Column(name="content")
     @NotBlank
-    @Size(max=280, message = "Comment must be less than 280 characters")
     private String content;
 
     @Column(name="created_at")

@@ -32,6 +32,5 @@ public class Retweet {
 
     @Column(name="quote")
     @NotBlank
-    @Size(max=280, message="Tweet content can not be longer than 280 characters")
     private String quote;
 } 
