@@ -7,6 +7,7 @@ import com.example.twitter.dto.user.UserListingDto;
 import com.example.twitter.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,16 +17,19 @@ public class UsersController {
     private final UserService userService;
 
     @PostMapping("register")
+    @ResponseStatus(HttpStatus.CREATED)
     public AuthUserDto register(@RequestBody @Valid RegisterDto registerDto) {
         return userService.register(registerDto);
     }
 
     @PostMapping("login")
+    @ResponseStatus(HttpStatus.OK)
     public AuthUserDto login(@RequestBody @Valid LoginDto loginDto) {
         return userService.login(loginDto);
     }
 
     @GetMapping("/{username}")
+    @ResponseStatus(HttpStatus.OK)
     public UserListingDto getUserByUsername(@PathVariable String username) {
         return userService.findByUsername(username);
     }
