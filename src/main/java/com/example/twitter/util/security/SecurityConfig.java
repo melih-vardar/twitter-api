@@ -48,6 +48,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/tweet/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/comment/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/retweet/**").permitAll()
                         
                         .requestMatchers(HttpMethod.POST, "/tweet").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/tweet/**").authenticated()
@@ -58,7 +59,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/comment/**").authenticated()
                         
                         .requestMatchers(HttpMethod.POST, "/like").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/dislike").authenticated()
                         
                         .requestMatchers(HttpMethod.POST, "/retweet").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/retweet/**").authenticated()
